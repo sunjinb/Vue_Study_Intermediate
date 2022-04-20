@@ -2,8 +2,10 @@
   <div id="app">
     <todo-header></todo-header>
     <todo-input v-on:addTodoItem="addOneItem"></todo-input>
-    <todo-list v-bind:propsdata="todoItems"></todo-list>
-    <todo-footer></todo-footer>
+    <todo-list v-bind:propsdata="todoItems" 
+      v-on:removeItem="removeOneItem" 
+      v-on:toggleItem="toggleOneItem"></todo-list>
+    <todo-footer v-on:clearAll="clearAllItems"></todo-footer>
   </div>
 </template>
 
@@ -24,6 +26,20 @@ export default {
       var obj = {completed: false, item: todoItem};
       localStorage.setItem(todoItem, JSON.stringify(obj));   //key : value
       this.todoItems.push(obj);
+    },
+    removeOneItem: function(todoItem, index){
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
+    },
+    toggleOneItem: function(todoItem, index){
+      this.todoItems[index].completed = !this.todoItems[index].completed;
+      // 로컬 스토리지의 데이터를 갱신
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+    clearAllItems: function(){
+      localStorage.clear();
+      this.todoItems = [];
     }
   },
   created: function(){
@@ -31,7 +47,6 @@ export default {
       for (var i = 0; i < localStorage.length; i++){
         this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
       }
-      this.todoItems.sort(this.sortObj);  //sort
     }
   },
   components: {
