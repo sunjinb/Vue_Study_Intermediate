@@ -16,10 +16,10 @@
 export default {
   props: ['propsdata'],
   methods : {
-    removeTodo : function(todoItem, index){
+    removeTodo(todoItem, index){
       this.$emit('removeItem', todoItem, index);
     },
-    toggleComplete: function(todoItem, index){
+    toggleComplete(todoItem, index){
       this.$emit('toggleItem', todoItem, index);
     },
   }
@@ -61,11 +61,10 @@ li {
 }
 /* 리스트 아이템 트렌지션 효과 */
 .list-enter-active, .list-leave-active {
-  transition: all 1s;
+  transition: all 1s;  
 }
 .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
   opacity: 0;
   transform: translateY(30px);
 }
-
 </style>
